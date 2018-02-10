@@ -13,6 +13,7 @@
 		42F9F9B7202F7C130062DF1E /* Wegmans_Planner.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 42F9F9B5202F7C130062DF1E /* Wegmans_Planner.xcdatamodeld */; };
 		42F9F9B9202F7C130062DF1E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42F9F9B8202F7C130062DF1E /* Assets.xcassets */; };
 		42F9F9BC202F7C130062DF1E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 42F9F9BA202F7C130062DF1E /* LaunchScreen.storyboard */; };
+		42F9F9C4202F9D500062DF1E /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42F9F9C3202F9D500062DF1E /* SignUpViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		42F9F9B8202F7C130062DF1E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		42F9F9BB202F7C130062DF1E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		42F9F9BD202F7C130062DF1E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		42F9F9C3202F9D500062DF1E /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,7 @@
 				42F9F9BA202F7C130062DF1E /* LaunchScreen.storyboard */,
 				42F9F9BD202F7C130062DF1E /* Info.plist */,
 				42F9F9B5202F7C130062DF1E /* Wegmans_Planner.xcdatamodeld */,
+				42F9F9C3202F9D500062DF1E /* SignUpViewController.swift */,
 			);
 			path = "Wegmans Planner";
 			sourceTree = "<group>";
@@ -141,6 +144,7 @@
 			files = (
 				42F9F9B1202F7C130062DF1E /* ViewController.swift in Sources */,
 				42F9F9B7202F7C130062DF1E /* Wegmans_Planner.xcdatamodeld in Sources */,
+				42F9F9C4202F9D500062DF1E /* SignUpViewController.swift in Sources */,
 				42F9F9AF202F7C130062DF1E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
