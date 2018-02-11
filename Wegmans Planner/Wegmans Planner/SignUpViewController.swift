@@ -16,13 +16,14 @@ class SignUpViewController: UIViewController,UIPickerViewDataSource, UIPickerVie
     @IBOutlet weak var store_count: UILabel!
     
     var stores : [String] = []
+    var selectedStore = ""
     var validForm = false
     
     var alertEmail = ""
     var alertPhone = 0
     
     @IBAction func emailSearch(_ sender: Any) {
-        let alert = UIAlertController(title: "Get Shoppers Club Card Number by Email Search",
+        let alert = UIAlertController(title: "Get Shoppers Club Card Info by Email Search",
                                       message: nil,
                                       preferredStyle: .alert)
         alert.addTextField { (textField) in
@@ -43,7 +44,7 @@ class SignUpViewController: UIViewController,UIPickerViewDataSource, UIPickerVie
     
     
     @IBAction func phoneSearch(_ sender: Any) {
-        let alert = UIAlertController(title: "Get Shoppers Club Card Number by Phone Number Search",
+        let alert = UIAlertController(title: "Get Shoppers Club Card Info by Phone Number Search",
                                       message: nil,
                                       preferredStyle: .alert)
         alert.addTextField { (textField) in
@@ -53,8 +54,8 @@ class SignUpViewController: UIViewController,UIPickerViewDataSource, UIPickerVie
         
         let okAction = UIAlertAction(title: "OK", style: .default) { [unowned alert] (action) in
             if let textField = alert.textFields?.first as UITextField? {
-                self.alertPhone = Int(textField.text!)!
                 print(textField.text ?? "Please enter a phone number.")
+                self.alertPhone = Int(textField.text!)!
             }
             print("The phone to search for is ",self.alertPhone)
             self.validateShoppersClubByPhone(myPhone: self.alertPhone)
@@ -82,7 +83,7 @@ class SignUpViewController: UIViewController,UIPickerViewDataSource, UIPickerVie
         else{
             userDefaults?.set(shoppersClubText.text, forKey: "shopperClub")
         }
-        userDefaults?.set(locationPicker,forKey: "defaultStore")
+        userDefaults?.set(selectedStore, forKey: "defaultStore")
         userDefaults?.synchronize()
         performSegue(withIdentifier: "setupSuccessful", sender: self)
     }
@@ -91,6 +92,8 @@ class SignUpViewController: UIViewController,UIPickerViewDataSource, UIPickerVie
     override func viewDidLoad() {
         super.viewDidLoad()
         parseLocation()
+        
+        locationPicker.reloadAllComponents()
         
         // check storage for saved sign up info
         let userDefaults = UserDefaults(suiteName: "WegmansPlanner")
@@ -109,7 +112,7 @@ class SignUpViewController: UIViewController,UIPickerViewDataSource, UIPickerVie
         // Do any additional setup after loading the view.
         locationPicker.dataSource = self
         locationPicker.delegate = self
-        locationPicker?.reloadAllComponents()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -149,6 +152,7 @@ class SignUpViewController: UIViewController,UIPickerViewDataSource, UIPickerVie
                         }
                         DispatchQueue.main.async {
                             self.store_count.text = "\(self.stores.count) locations"
+                            self.locationPicker?.reloadAllComponents()
                         }
                         //print(close_store_arr)
 //                        for shop in self.stores{
@@ -168,8 +172,9 @@ class SignUpViewController: UIViewController,UIPickerViewDataSource, UIPickerVie
         task.resume()
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String! {
-        return stores[row]
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        selectedStore = self.stores[row]
+        return self.stores[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -180,10 +185,11 @@ class SignUpViewController: UIViewController,UIPickerViewDataSource, UIPickerVie
         return 1
     }
     
-    func displayStoreInfo(){
-        //locationPicker.dataSource = close_store_arr
-        print(self.stores)
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int){
+        selectedStore = self.stores[row]
+        print(selectedStore)
     }
+    
     
     func validateShoppersClubByPhone(myPhone: Int){
         print(myPhone)
@@ -214,7 +220,6 @@ class SignUpViewController: UIViewController,UIPickerViewDataSource, UIPickerVie
                     print("no data")
                 }
             }
-            
         }
         task.resume()
         shoppersClubText.text = shoppersCard

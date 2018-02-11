@@ -34,15 +34,59 @@ struct selected_product {
     }
 }
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        // If we haven't typed anything into the search bar then do not filter the results
+        if searchController.searchBar.text! == "" {
+            filteredProductTableList = productTableList
+        } else {
+            // Filter the results
+            filteredProductTableList = productTableList.filter { ($0.name?.lowercased().contains(searchController.searchBar.text!.lowercased()))! }
+        }
+        
+        self.productTable.reloadData()
+    }
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.productTableList.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: UITableViewCell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "cell")
+        
+        cell.textLabel?.text = self.productTableList[indexPath.row].name
+        cell.detailTextLabel?.text = self.productTableList[indexPath.row].price as! String?
+        
+        return cell
+    }
+    
+    
+    @IBOutlet weak var nyLocations: UINavigationItem!
+    @IBOutlet weak var productTable: UITableView!
+    
+    
+    var productTableList = [selected_product]()
+    var filteredProductTableList = [selected_product]()
+    
+    let searchController = UISearchController(searchResultsController: nil)
     
     let location = "New York"
     let city = "Rochester"
-    @IBOutlet var store_count: UILabel!
     let price = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        filteredProductTableList = productTableList
+        searchController.searchResultsUpdater = self
+        searchController.dimsBackgroundDuringPresentation = false
+        definesPresentationContext = true
+        productTable.tableHeaderView = searchController.searchBar
+        
+        self.productTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        
         parseProducts()
         parseAllProductInformation(mySku:"709792")
         parsePrices()
@@ -161,7 +205,8 @@ class ViewController: UIViewController {
                         }
                         
                         DispatchQueue.main.async {
-                            self.store_count.text = "\(close_store_arr.count)"
+//                            self.store_count.text = "\(close_store_arr.count)"
+                             self.nyLocations.title = "\(close_store_arr.count) stores in NY"
                         }
                         //print(close_store_arr)
                     }
