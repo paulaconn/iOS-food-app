@@ -17,7 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		42F9F9AB202F7C130062DF1E /* Wegmans Planner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wegmans Planner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		42F9F9AB202F7C130062DF1E /* Planner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Planner.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		42F9F9AE202F7C130062DF1E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		42F9F9B0202F7C130062DF1E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		42F9F9B3202F7C130062DF1E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -50,7 +50,7 @@
 		42F9F9AC202F7C130062DF1E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				42F9F9AB202F7C130062DF1E /* Wegmans Planner.app */,
+				42F9F9AB202F7C130062DF1E /* Planner.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -87,7 +87,7 @@
 			);
 			name = "Wegmans Planner";
 			productName = "Wegmans Planner";
-			productReference = 42F9F9AB202F7C130062DF1E /* Wegmans Planner.app */;
+			productReference = 42F9F9AB202F7C130062DF1E /* Planner.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -281,12 +281,12 @@
 		42F9F9C1202F7C130062DF1E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Wegmans Planner/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.tfw.Wegmans-Planner";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Planner;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -295,12 +295,12 @@
 		42F9F9C2202F7C130062DF1E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-1";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = "Wegmans Planner/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.tfw.Wegmans-Planner";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Planner;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
