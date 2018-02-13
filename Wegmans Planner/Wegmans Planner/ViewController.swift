@@ -16,6 +16,8 @@ struct selected_product {
     var quantity : Int?
     var img_url : String?
     var location : String?
+    var type : String?
+    var warnings : String?
     
     init(sku : String? = nil,
          price : Double? = nil,
@@ -23,7 +25,9 @@ struct selected_product {
          allergies : String? = nil,
          quantity : Int? = nil,
          img_url : String? = nil,
-         location : String? = nil) {
+         location : String? = nil,
+         type : String? = nil,
+         warnings : String? = nil) {
         self.sku = sku
         self.price = price
         self.name = name
@@ -31,8 +35,12 @@ struct selected_product {
         self.quantity = quantity
         self.img_url = img_url
         self.location = location
+        self.type = type
+        self.warnings = warnings
     }
 }
+
+var prod = selected_product() ///STOPPED HERE
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating {
     
@@ -65,7 +73,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBOutlet weak var nyLocations: UINavigationItem!
     @IBOutlet weak var productTable: UITableView!
-    
+    @IBOutlet var food_image: UIImageView!
     
     var productTableList = [selected_product]()
     var filteredProductTableList = [selected_product]()
@@ -75,6 +83,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     let location = "New York"
     let city = "Rochester"
     let price = 0.0
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,8 +96,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         self.productTable.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
-        parseProducts()
-        parseAllProductInformation(mySku:"709792")
+        // Determine mySearch based on user input
+        parseProducts(mySearch : "cereal")
         parsePrices()
     }
     
@@ -98,8 +107,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 
     // Parse products from API (JSON)
-    func parseProducts(){
-        let url = URL(string: "https://api.wegmans.io/product/products/search?criteria=milk")!
+    func parseProducts(mySearch : String){
+        let url = URL(string: "https://api.wegmans.io/product/products/search?criteria=\(mySearch)")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("4982e31c064e40708e5984724133018a", forHTTPHeaderField: "Product-Subscription-Key")
@@ -117,13 +126,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                             var product_dict = [String: String]()
                             for product in result_arr {
                                 if let product_name = product["description"] as? String, let product_sku = product["sku"] as? String{
-                                    product_dict[product_sku] = product_name
+                                    product_dict[product_name] = product_sku
                                 }
                             }
+                            
+                            self.parseAllProductInformation(mySku: product_dict.values.first!)
+                            
                             //These are related suggestions that the person searched for provide as buttons
                             print(product_dict)
                             //Save the description to the object
-                            //Send the selected SKU and object to parseAllProductInformation()
                         }
                     }
                     else {
@@ -158,9 +169,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                     if let dict_data = json as? [String : Any]{
                         var prod = selected_product()
                         prod.sku = mySku
-                        if let product_name = dict_data["Description"] as? String{
-                            prod.name = product_name
-                            print(prod)
+                        if let product_type = dict_data["ProductType"] as? String{
+                            prod.type = product_type
+                        }
+                        if let product_warnings = dict_data["Warnings"] as? String{
+                            prod.warnings = product_warnings
+                        }
+                        if let image_dict = dict_data["TradeIdentifierConfigurations"] as? [[String : Any]], let trade_arr = image_dict.first?["TradeIdentifiers"] as? [[String : Any]], let image_arr = trade_arr.first?["Images"] as? [[String : Any]], let image_url = image_arr.first?["Url"] as? String {
+                            prod.img_url = "https://www.wegmans.com\(image_url)"
+                            self.downloadFoodImg(url: prod.img_url!)
                         }
                         
                     }
@@ -176,6 +193,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         task.resume()
     }//end of parseAllProductInformation()
+    
+    // Download image
+    func downloadFoodImg(url:String){
+        let task = URLSession.shared.dataTask(with: URL(string : url)!){
+            (data, response, error) in
+            if let data = data, error == nil, let img = UIImage(data : data){
+                DispatchQueue.main.async {
+                    self.food_image.image = img
+                }
+            }
+        }
+        task.resume()
+    }//end of downloadFoodImg()
     
     // Reads location information from Wegmans API
     func parseLocation(){
@@ -208,7 +238,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 //                            self.store_count.text = "\(close_store_arr.count)"
                              self.nyLocations.title = "\(close_store_arr.count) stores in NY"
                         }
-                        //print(close_store_arr)
                     }
                     else {
                         print(json)
